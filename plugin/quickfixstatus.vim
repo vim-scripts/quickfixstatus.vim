@@ -8,7 +8,7 @@ if exists("g:loaded_quickfixstatus") || &cp
       finish
 endif
 
-let g:loaded_quickfixstatus = 100
+let g:loaded_quickfixstatus = 101
 let s:keepcpo           = &cpo
 set cpo&vim
 
@@ -20,7 +20,9 @@ function! s:Cache_Quickfix()
         let sy = []
     endif
     for allfixes in extend(extend(getqflist(), getloclist(0)), sy)
-        let b:qfstatus_list[allfixes['lnum']] = allfixes['text']
+        let err = allfixes['text']
+        let err = strpart(substitute(err,'\n',' ','g'), 0, winwidth(0)) 
+        let b:qfstatus_list[allfixes['lnum']] = err
     endfor
     call s:Show_Quickfix_In_Status()
 endfunction
